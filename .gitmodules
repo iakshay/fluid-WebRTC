@@ -1,0 +1,6 @@
+[submodule "libs/infusion"]
+	path = libs/infusion
+	url = git@github.com:fluid-project/infusion.git
+[submodule "libs/SimpleWebRTC"]
+	path = libs/SimpleWebRTC
+	url = git@github.com:HenrikJoreteg/SimpleWebRTC.git
