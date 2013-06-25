@@ -4,3 +4,6 @@
 [submodule "libs/SimpleWebRTC"]
 	path = libs/SimpleWebRTC
 	url = git@github.com:HenrikJoreteg/SimpleWebRTC.git
+[submodule "server"]
+	path = server
+	url = https://github.com/andyet/signalmaster
