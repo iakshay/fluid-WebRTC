@@ -10,3 +10,5 @@ To launch the server
 	node server
 
 To see the component demo, open demos/index.html
+
+*Note -* You will need to run the demo on a server, since getUserMedia won't work with File URL's 
