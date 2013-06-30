@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+	<title>Fluid WebRTC Tests</title>
+	<meta charset="utf-8" />
+	<!-- Fluid Skinning System -->
+	<link rel="stylesheet" type="text/css" href="../../libs/infusion/src/webapp/framework/fss/css/fss-reset-global.css" />
+	<link rel="stylesheet" type="text/css" href="../../libs/infusion/src/webapp/framework/fss/css/fss-base-global.css" />
+	<link rel="stylesheet" type="text/css" href="../../libs/infusion/src/webapp/framework/fss/css/fss-text.css" />
+	<link rel="stylesheet" type="text/css" href="../../libs/infusion/src/webapp/framework/fss/css/fss-layout.css" />
+	
+	<!-- QUnit CSS -->
+	<link rel="stylesheet" type="text/css" href="../../libs/infusion/src/webapp/tests/lib/qunit/css/qunit.css" />
+
+	<!-- Fluid Infusion Libraries -->
+	<script type="text/javascript" src="../../libs/infusion/src/webapp/lib/jquery/core/js/jquery.js"></script>
+	<script type="text/javascript" src="../../libs/infusion/src/webapp/lib/jquery/ui/js/jquery.ui.core.js"></script>
+	<script type="text/javascript" src="../../libs/infusion/src/webapp/lib/fastXmlPull/js/fastXmlPull.js"></script>
+	
+	<!-- Fluid Infusion Core -->
+	<script type="text/javascript" src="../../libs/infusion/src/webapp/framework/core/js/Fluid.js"></script>
+	<script type="text/javascript" src="../../libs/infusion/src/webapp/framework/core/js/FluidDocument.js"></script>
+	<script type="text/javascript" src="../../libs/infusion/src/webapp/framework/core/js/FluidDebugging.js"></script>
+	<script type="text/javascript" src="../../libs/infusion/src/webapp/framework/core/js/FluidDOMUtilities.js"></script>
+	<script type="text/javascript" src="../../libs/infusion/src/webapp/framework/core/js/FluidView.js"></script>
+	<script type="text/javascript" src="../../libs/infusion/src/webapp/framework/core/js/DataBinding.js"></script>
+	<script type="text/javascript" src="../../libs/infusion/src/webapp/framework/core/js/FluidRequests.js"></script>
+	<script type="text/javascript" src="../../libs/infusion/src/webapp/framework/core/js/FluidIoC.js"></script>
+	<!-- jQuery Keyboard Accessibility plugin -->
+	<script type="text/javascript" src="../../libs/infusion/src/webapp/framework/core/js/jquery.keyboard-a11y.js"></script>
+
+	<script type="text/javascript" src="../../libs/infusion/src/webapp/framework/enhancement/js/ProgressiveEnhancement.js"></script>
+	
+	<!-- Fluid Infusion Renderer -->
+	<script type="text/javascript" src="../../libs/infusion/src/webapp/framework/renderer/js/fluidParser.js"></script>
+	<script type="text/javascript" src="../../libs/infusion/src/webapp/framework/renderer/js/fluidRenderer.js"></script>
+	<script type="text/javascript" src="../../libs/infusion/src/webapp/framework/renderer/js/RendererUtilities.js"></script>
+	
+	<!-- socket.io -->
+    <script src="http://signaling.simplewebrtc.com:8888/socket.io/socket.io.js"></script>
+
+	<!-- SimpleWebRTC.js -->
+	<script type="text/javascript" src="../../libs/SimpleWebRTC/SimpleWebRTC.js"></script>
+
+	<!-- WebRTC Component -->
+	<script type="text/javascript" src="../../js/WebRTC.js"></script>
+
+	<!-- jqUnit tests -->
+    <script type="text/javascript" src="../../libs/infusion/src/webapp/tests/lib/qunit/js/qunit.js"></script>
+    <script type="text/javascript" src="../../libs/infusion/src/webapp/tests/test-core/jqUnit/js/jqUnit.js"></script>
+    <script type="text/javascript" src="../js/WebRTCTests.js"></script>
+</head>
+<body>
+	<!-- This is the markup that jqUnit will look for when running tests and displaying the results -->
+	<h1 id="qunit-header">WebRTC Suite</h1>
+	<h2 id="qunit-banner"></h2>
+	<div id="qunit-testrunner-toolbar"></div>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">
+
+	<div class="flc-webrtc-wrapper">
+	    
+	</div>
+
+	</div> <!-- /main -->
+</body>
+</html>
