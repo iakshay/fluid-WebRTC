@@ -9,6 +9,9 @@
 	<link rel="stylesheet" type="text/css" href="../libs/infusion/src/webapp/framework/fss/css/fss-text.css" />
 	<link rel="stylesheet" type="text/css" href="../libs/infusion/src/webapp/framework/fss/css/fss-layout.css" />
 
+	<link rel="stylesheet" type="text/css" href="../css/WebRTC.css" />
+	<link rel="stylesheet" type="text/css" href="../css/WebRTCDemo.css" />
+	
 	<!-- Fluid Infusion Libraries -->
 	<script type="text/javascript" src="../libs/infusion/src/webapp/lib/jquery/core/js/jquery.js"></script>
 	<script type="text/javascript" src="../libs/infusion/src/webapp/lib/jquery/ui/js/jquery.ui.core.js"></script>
@@ -34,7 +37,7 @@
 	<script type="text/javascript" src="../libs/infusion/src/webapp/framework/renderer/js/RendererUtilities.js"></script>
 	
 	<!-- socket.io -->
-    <script src="http://signaling.simplewebrtc.com:8888/socket.io/socket.io.js"></script>
+    <script src="http://localhost:8888/socket.io/socket.io.js"></script>
 
 	<!-- SimpleWebRTC.js -->
 	<script type="text/javascript" src="../libs/SimpleWebRTC/SimpleWebRTC.js"></script>
@@ -47,13 +50,17 @@
 <body>
 	<div id="wrapper">
         <div class="flc-webrtc-wrapper">
-            <div class="flc-webrtc-join-room">
-            	<h2>Join/Create Room</h2>
+            <div class="flc-webrtc-room">
+            	<h2 class="flc-webrtc-status">Create Room</h2>
                 <input type="text" class="flc-webrtc-room-name" placeholder="Enter Room Name" />
-                <input type="submit" value="Join" />
             </div> 
-            <div class="flc-webrtc-videos">
-                <div class="flc-webrtc-local-video"></div>
+            <div class="flc-video-enlarged"></div>
+            <div class="flc-webrtc-tiles-container">
+            	<div class="flc-webrtc-video-controls">
+                	<video class="flc-webrtc-local-video" muted></video>
+                	<span class="flc-webrtc-video-mute">Mute</span>
+                	<span class="flc-webrtc-video-fullscreen">Fullscreen</span>
+                </div>
                 <div class="flc-webrtc-remote-video"></div>
             </div>
         </div>
