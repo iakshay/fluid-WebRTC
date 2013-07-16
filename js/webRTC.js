@@ -62,9 +62,9 @@ var fluid_1_5 = fluid_1_5 || {};
         }
 
         var addVideoTile = function(el){
-            var videoControls = $('<div class="flc-webrtc-video-controls"><span class="flc-webrtc-video-mute">Mute</span><span class="flc-webrtc-video-fullscreen">Fullscreen</span></div>');
+            var videoControls = $('<div class="flc-webrtc-video-controls flc-webrtc-remote"><span class="flc-webrtc-video-mute">Mute</span><span class="flc-webrtc-video-fullscreen">Fullscreen</span></div>');
             videoControls.prepend(el);
-            that.locate('remoteVideo').append(videoControls);
+            that.locate('tilesContainer').append(videoControls);
         };
 
         var removeVideoTile = function(el){

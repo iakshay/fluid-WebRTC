@@ -1,0 +1,44 @@
+.flc-webrtc-room-name{
+  display:none;
+}
+.flc-webrtc-video-controls{
+  display:inline-block;
+  position: relative;
+  margin:10px 5px;
+  background:#eee;
+}
+
+.flc-webrtc-video-controls video {
+  width:250px;
+}
+
+.flc-webrtc-video-controls span{
+  cursor:pointer;
+  color:#fff;
+  background:rgba(24,20,20,0.5);
+  padding:3px;
+  position: absolute;
+  bottom:5px;
+  opacity:0;
+  transition: 0.5s opacity;
+}
+.flc-webrtc-video-controls:hover span{
+  opacity:1;
+}
+
+.flc-webrtc-video-fullscreen{
+  right:5px;
+}
+
+.flc-webrtc-video-mute{
+  left:5px;
+}
+.flc-webrtc-enlarged {
+  text-align:center;
+}
+.flc-webrtc-local-video video{
+  box-shadow:1px 1px 5px 2px #CCC;
+}
+.flc-webrtc-local-video, .flc-webrtc-remote-video{
+  display:inline-block;
+}
