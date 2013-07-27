@@ -7,36 +7,51 @@ var fluid_1_5 = fluid_1_5 || {};
 
     var room;
     fluid.defaults("fluid.webrtc", {
-        gradeNames: ["fluid.viewComponent", "autoInit"],
+        gradeNames: ["fluid.rendererComponent", "autoInit"],
         signalingServer: 'http://signaling.simplewebrtc.com:8888',
+        strings:{
+            joinRoom: "Enter Room Name:"
+        },
         selectors: {
-            room: ".flc-webrtc-room",
             status: ".flc-webrtc-status",
             roomName: ".flc-webrtc-room-name",
             enlargedContainer: ".flc-webrtc-enlarged",
             tilesContainer: ".flc-webrtc-tiles-container",
-            localVideo: ".flc-webrtc-local-video",
+            localVideo: ".flc-webrtc-local",
             remoteVideo: ".flc-webrtc-remote-video"
+        },
+        selectorsToIgnore: [
+          'status', 'roomName', 'tilesContainer'
+        ],
+        model:{
+            room:"foo"
         },
         events: {
             onConnect: null,
             onVideoAdded: null,
             onVideoRemove: null
         },
-        finalInitFunction: "fluid.webrtc.finalInit",
-        renderOnInit: true
+        resources: {
+            template: {
+                forceCache: true,
+                url: "../html/webrtc.html"
+            }
+        },
+        produceTree: "fluid.webrtc.produceTree",
+        finalInitfunction: "fluid.webrtc.finalInit",
+        //renderOnInit: true
     });
 
     /**
-     * Bind DOM Events
+     * bind dom events
      */
 
     var bindDOMEvents = function (that) {
-        that.locate("roomName").keypress(function (e) {
+        that.locate("roomname").keypress(function (e) {
             if (e.which === 13) {
-                console.log('Join Room');
-                room = that.locate('roomName').val();
-                that.webrtc.joinRoom(room);
+                console.log('join room');
+                room = that.locate('roomname').val();
+                that.webrtc.joinroom(room);
             }
         });
 
@@ -46,20 +61,32 @@ var fluid_1_5 = fluid_1_5 || {};
         });
 
         $('.flc-webrtc-video-fullscreen').on('click', function(){
-            $(this).siblings('video').get(0).webkitEnterFullscreen();
+            $(this).siblings('video').get(0).webkitenterfullscreen();
         })
+    };
+    fluid.webrtc.produceTree = function (that) {
+      return {
+        status: 'foo',
+        roomName: 'room'
+      };
+
     };
 
     fluid.webrtc.finalInit = function (that) {
+        /*fluid.fetchResources(that.options.resources, function (data) {
+            console.log(that.options.resources.template.resourceText, data);
+            that.container.append(that.options.resources.template.resourceText);
+            that.refreshView();
+        });
+        */
         room = that.options.room;
         var $status = that.locate('status'),
-            $tilesContainer = that.locate('tilesContainer');
+            $tilescontainer = that.locate('tilescontainer');
 
         if (room) {
-            $status.html('Joining room - ' + room);
-        } else {
-            that.locate('roomName').show();
-        }
+            that.locate('roomName').hide();
+            $status.html('joining room - ' + room);
+        } 
 
         var addVideoTile = function(el){
             var videoControls = $('<div class="flc-webrtc-video-controls flc-webrtc-remote"><span class="flc-webrtc-video-mute">Mute</span><span class="flc-webrtc-video-fullscreen">Fullscreen</span></div>');
@@ -74,8 +101,7 @@ var fluid_1_5 = fluid_1_5 || {};
         that.webrtc = new WebRTC({
             url: that.options.signalingServer,
             localVideoEl: that.locate('localVideo')[0],
-            //remoteVideosEl: that.locate('remoteVideo')[0],
-            // immediately ask for camera access
+            remoteVideosEl: that.locate('remoteVideo')[0],
             autoRequestMedia: true,
             log: false
         });
@@ -102,9 +128,7 @@ var fluid_1_5 = fluid_1_5 || {};
             that.events.onVideoRemove.fire();
         });
 
-        that.test = function () {
-            console.log('Yo!');
-        };
         bindDOMEvents(that);
+        
     };
 }(jQuery, fluid_1_5));
