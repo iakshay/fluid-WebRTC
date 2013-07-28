@@ -18,11 +18,14 @@ var fluid_1_5 = fluid_1_5 || {};
             enlargedContainer: ".flc-webrtc-enlarged",
             tilesContainer: ".flc-webrtc-tiles-container",
             localVideo: ".flc-webrtc-local",
-            remoteVideo: ".flc-webrtc-remote-video"
+            remoteVideo: ".flc-webrtc-remote-video",
+            muteBtn: ".flc-webrtc-video-mute",
+            fullscreenBtn: ".flc-webrtc-video-fullscreen"
         },
         selectorsToIgnore: [
-          'status', 'roomName', 'tilesContainer'
+          'status', 'roomName', 'tilesContainer', 'muteBtn', 'fullScreenBtn'
         ],
+        repeatingSelectors: ['muteBtn', 'fullscreenBtn'],
         model:{
             room:"foo"
         },
@@ -34,7 +37,7 @@ var fluid_1_5 = fluid_1_5 || {};
         resources: {
             template: {
                 forceCache: true,
-                url: "../html/webrtc.html"
+                url: "../html/video-controls.html"
             }
         },
         produceTree: "fluid.webrtc.produceTree",
@@ -47,61 +50,41 @@ var fluid_1_5 = fluid_1_5 || {};
      */
 
     var bindDOMEvents = function (that) {
-        that.locate("roomname").keypress(function (e) {
+        that.locate("roomName").keypress(function (e) {
             if (e.which === 13) {
                 console.log('join room');
-                room = that.locate('roomname').val();
+                room = that.locate('roomName').val();
                 that.webrtc.joinroom(room);
             }
         });
 
-        $('.flc-webrtc-video-mute').on('click', function(){
+        that.locate('muteBtn').on('click', function(){
             console.log('mute');
             $(this).siblings('video').get(0).muted = true;
         });
 
-        $('.flc-webrtc-video-fullscreen').on('click', function(){
-            $(this).siblings('video').get(0).webkitenterfullscreen();
-        })
+        that.locate('fullScreenBtn').on('click', function(){
+            console.log('fullscreen');
+            //$(this).siblings('video').get(0).webkitEnterFullscreen();
+        });
     };
+    
     fluid.webrtc.produceTree = function (that) {
       return {
         status: 'foo',
-        roomName: 'room'
+        roomName: '${roomName}'
       };
 
     };
 
-    fluid.webrtc.finalInit = function (that) {
-        /*fluid.fetchResources(that.options.resources, function (data) {
-            console.log(that.options.resources.template.resourceText, data);
-            that.container.append(that.options.resources.template.resourceText);
-            that.refreshView();
-        });
-        */
-        room = that.options.room;
-        var $status = that.locate('status'),
-            $tilescontainer = that.locate('tilescontainer');
-
-        if (room) {
-            that.locate('roomName').hide();
-            $status.html('joining room - ' + room);
-        } 
-
-        var addVideoTile = function(el){
-            var videoControls = $('<div class="flc-webrtc-video-controls flc-webrtc-remote"><span class="flc-webrtc-video-mute">Mute</span><span class="flc-webrtc-video-fullscreen">Fullscreen</span></div>');
-            videoControls.prepend(el);
-            that.locate('tilesContainer').append(videoControls);
-        };
-
-        var removeVideoTile = function(el){
-            $('#' + el.id).parent().remove();
-        };
-
+    function createWebRTC(that){
+        var $localVideo = that.addVideoTile(),
+        $status = that.locate('status');
+        $localVideo.addClass('flc-webrtc-local');
         that.webrtc = new WebRTC({
             url: that.options.signalingServer,
-            localVideoEl: that.locate('localVideo')[0],
-            remoteVideosEl: that.locate('remoteVideo')[0],
+            localVideoEl: $localVideo.get(0),
+            //remoteVideosEl: that.locate('remoteVideo')[0],
             autoRequestMedia: true,
             log: false
         });
@@ -118,16 +101,50 @@ var fluid_1_5 = fluid_1_5 || {};
 
         that.webrtc.on('videoAdded', function (el) {
             console.log('New Video Added', el.id, el.src);
-            addVideoTile(el);
+            that.addVideoTile(el);
             that.events.onVideoAdded.fire();
         });
 
         that.webrtc.on('videoRemoved', function (el) {
             console.log('Video Removed', el.id, el.src);
-            removeVideoTile(el);
+            that.removeVideoTile(el);
             that.events.onVideoRemove.fire();
         });
+    }
 
+    fluid.webrtc.finalInit = function (that) {
+        var $status = that.locate('status'),
+            $tilesContainer = that.locate('tilesContainer');
+        room = that.options.room;
+
+        if (room) {
+            that.locate('roomName').hide();
+            $status.html('joining room - ' + room);
+        }
+        
+        fluid.fetchResources(that.options.resources, function (data) {
+            console.log('Template fetched!');
+            //$tilesContainer.append(that.options.resources.template.resourceText);
+            //that.refreshView();
+            that.addVideoTile = function(el){
+                var $videoControls = $(that.options.resources.template.resourceText);
+                $videoControls.prepend(el);
+                $tilesContainer.append($videoControls);
+                that.dom.clear();
+                bindDOMEvents(that);
+                //console.log(that.dom);
+                return $videoControls;
+            };
+
+            that.removeVideoTile = function(el){
+                $('#' + el.id).parent().remove();
+            };
+            
+            createWebRTC(that);
+        });
+        that.refresh = function(){
+            that.refreshView();
+        };
         bindDOMEvents(that);
         
     };
