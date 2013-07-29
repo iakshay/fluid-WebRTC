@@ -8,11 +8,14 @@ $(function () {
             onConnect: function(room) {
                 console.log('Connected to ', room);
             },
-            onVideoAdded:function(id) {
+            onVideoAdded: function(id) {
                 console.log('Video Added ID - ', id);
             },
-            onVideoRemoved:function(id) {
+            onVideoRemoved: function(id) {
                 console.log('Video Removed ID - ', id);
+            },
+            onVideoClick: function(el){
+                console.log('Video - ', el);
             }
         }
     });

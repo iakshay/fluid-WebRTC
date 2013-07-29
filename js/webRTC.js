@@ -15,7 +15,9 @@ var fluid_1_5 = fluid_1_5 || {};
         },
         selectors: {
             status: ".flc-webrtc-status",
+            room: ".flc-webrtc-room",
             roomName: ".flc-webrtc-room-name",
+            roomSubmit: ".flc-webrtc-room-submit",
             enlargedContainer: ".flc-webrtc-enlarged",
             tilesContainer: ".flc-webrtc-tiles-container",
             localVideo: ".flc-webrtc-local",
@@ -37,7 +39,8 @@ var fluid_1_5 = fluid_1_5 || {};
         events: {
             onConnect: null,
             onVideoAdded: null,
-            onVideoRemoved: null
+            onVideoRemoved: null,
+            onVideoClick: null
         },
         resources: {
             template: {
@@ -57,17 +60,27 @@ var fluid_1_5 = fluid_1_5 || {};
     var bindDOMEvents = function (that) {
         that.locate("roomName").keypress(function (e) {
             if (e.which === 13) {
-                room = that.locate('roomName').val();
-                that.webrtc.joinRoom(room);
-                $(this).hide();
-                that.events.onConnect.fire(room);
-                that.locate('status').html('joining room - ' + room);
+                that.locate('roomSubmit').focus().click();
+                return false;
             }
+        });
+
+        that.locate('roomSubmit').click(function(){
+            room = that.locate('roomName').val();
+            that.webrtc.joinRoom(room);
+            that.locate('room').hide();
+            that.events.onConnect.fire(room);
+            that.locate('status').html(that.options.strings.joiningRoom + room);
+            return false;
+        });
+        
+        that.locate('tilesContainer').on('click', 'video', function(){
+            that.events.onVideoClick.fire(this);
         });
 
         that.locate('tilesContainer').on('click', '.flc-webrtc-video-mute', function(){
             console.log('mute');
-            $(this).siblings('video').get(0).muted = true;
+            $(this).siblings('video').get(0).muted ^= true;
         });
 
         that.locate('tilesContainer').on('click', '.flc-webrtc-video-fullscreen', function(){
@@ -91,6 +104,7 @@ var fluid_1_5 = fluid_1_5 || {};
     function createWebRTC(that){
         var $localVideo = that.addVideoTile(),
         $status = that.locate('status');
+        $localVideo.find('.flc-webrtc-video-mute').remove();
         $localVideo.addClass('flc-webrtc-local');
         $localVideo.prepend('<video muted></video>');
         that.webrtc = new WebRTC({
