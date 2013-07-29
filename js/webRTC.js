@@ -2,7 +2,7 @@
 var fluid_1_5 = fluid_1_5 || {};
 (function ($, fluid) {
     'use strict';
-    fluid.setLogging(true);
+    //fluid.setLogging(true);
     fluid.registerNamespace('fluid.webrtc');
 
     var room;
@@ -10,7 +10,8 @@ var fluid_1_5 = fluid_1_5 || {};
         gradeNames: ["fluid.rendererComponent", "autoInit"],
         signalingServer: 'http://signaling.simplewebrtc.com:8888',
         strings:{
-            joinRoom: "Enter Room Name:"
+            joinRoom: "Enter Room Name:",
+            joiningRoom: "Joining Room - "
         },
         selectors: {
             status: ".flc-webrtc-status",
@@ -52,21 +53,14 @@ var fluid_1_5 = fluid_1_5 || {};
     var bindDOMEvents = function (that) {
         that.locate("roomName").keypress(function (e) {
             if (e.which === 13) {
-                console.log('join room');
                 room = that.locate('roomName').val();
-                that.webrtc.joinroom(room);
+                that.webrtc.joinRoom(room);
+                $(this).hide();
+                that.events.onConnect.fire(room);
+                that.locate('status').html('joining room - ' + room);
             }
         });
 
-        that.locate('muteBtn').on('click', function(){
-            console.log('mute');
-            $(this).siblings('video').get(0).muted = true;
-        });
-
-        that.locate('fullScreenBtn').on('click', function(){
-            console.log('fullscreen');
-            //$(this).siblings('video').get(0).webkitEnterFullscreen();
-        });
     };
     
     fluid.webrtc.produceTree = function (that) {
@@ -90,25 +84,23 @@ var fluid_1_5 = fluid_1_5 || {};
         });
 
         that.webrtc.on('readyToCall', function () {
-            console.log('Ready to go');
-
             if (room) {
                 that.webrtc.joinRoom(room);
-                $status.html('Joined room ' + room);
+                $status.html(that.options.strings.joiningRoom + room);
+                that.events.onConnect.fire(room);
             }
-            that.events.onConnect.fire();
         });
 
         that.webrtc.on('videoAdded', function (el) {
-            console.log('New Video Added', el.id, el.src);
+            //console.log('New Video Added', el.id, el.src);
             that.addVideoTile(el);
-            that.events.onVideoAdded.fire();
+            that.events.onVideoAdded.fire(el.id);
         });
 
         that.webrtc.on('videoRemoved', function (el) {
-            console.log('Video Removed', el.id, el.src);
+            //console.log('Video Removed', el.id, el.src);
             that.removeVideoTile(el);
-            that.events.onVideoRemove.fire();
+            that.events.onVideoRemove.fire(el.id);
         });
     }
 
@@ -119,20 +111,16 @@ var fluid_1_5 = fluid_1_5 || {};
 
         if (room) {
             that.locate('roomName').hide();
-            $status.html('joining room - ' + room);
+            $status.html(that.options.strings.joiningRoom + room);
         }
         
         fluid.fetchResources(that.options.resources, function (data) {
-            console.log('Template fetched!');
             //$tilesContainer.append(that.options.resources.template.resourceText);
             //that.refreshView();
             that.addVideoTile = function(el){
                 var $videoControls = $(that.options.resources.template.resourceText);
                 $videoControls.prepend(el);
                 $tilesContainer.append($videoControls);
-                that.dom.clear();
-                bindDOMEvents(that);
-                //console.log(that.dom);
                 return $videoControls;
             };
 
@@ -142,9 +130,6 @@ var fluid_1_5 = fluid_1_5 || {};
             
             createWebRTC(that);
         });
-        that.refresh = function(){
-            that.refreshView();
-        };
         bindDOMEvents(that);
         
     };
