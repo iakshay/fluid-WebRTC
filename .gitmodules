@@ -7,3 +7,6 @@
 [submodule "server"]
 	path = server
 	url = https://github.com/andyet/signalmaster
+[submodule "libs/screenfull.js"]
+	path = libs/screenfull.js
+	url = git@github.com:sindresorhus/screenfull.js.git

@@ -72,7 +72,10 @@ var fluid_1_5 = fluid_1_5 || {};
 
         that.locate('tilesContainer').on('click', '.flc-webrtc-video-fullscreen', function(){
             console.log('fullscreen');
-            $(this).siblings('video').get(0).webkitEnterFullscreen();
+            if (screenfull.enabled) {
+                var video = $(this).siblings('video').get(0);
+                screenfull.toggle(video);
+            }
         });
     };
 
