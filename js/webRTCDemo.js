@@ -11,19 +11,9 @@ $(function () {
             onVideoAdded:function(id) {
                 console.log('Video Added ID - ', id);
             },
-            onVideoRemove:function(id) {
+            onVideoRemoved:function(id) {
                 console.log('Video Removed ID - ', id);
             }
         }
     });
-
-        $('.flc-webrtc-video-mute').on('click', function(){
-            console.log('mute');
-            $(this).siblings('video').get(0).muted = true;
-        });
-
-        $('.flc-webrtc-video-fullscreen').on('click', function(){
-            console.log('fullscreen');
-            //$(this).siblings('video').get(0).webkitEnterFullscreen();
-        });
 });

@@ -28,12 +28,16 @@ var fluid_1_5 = fluid_1_5 || {};
         ],
         repeatingSelectors: ['muteBtn', 'fullscreenBtn'],
         model:{
-            room:"foo"
+            roomName: "foo",
+            local: {
+                fullscreen: false,
+                mute: false
+            }
         },
         events: {
             onConnect: null,
             onVideoAdded: null,
-            onVideoRemove: null
+            onVideoRemoved: null
         },
         resources: {
             template: {
@@ -61,7 +65,17 @@ var fluid_1_5 = fluid_1_5 || {};
             }
         });
 
+        that.locate('tilesContainer').on('click', '.flc-webrtc-video-mute', function(){
+            console.log('mute');
+            $(this).siblings('video').get(0).muted = true;
+        });
+
+        that.locate('tilesContainer').on('click', '.flc-webrtc-video-fullscreen', function(){
+            console.log('fullscreen');
+            $(this).siblings('video').get(0).webkitEnterFullscreen();
+        });
     };
+
     
     fluid.webrtc.produceTree = function (that) {
       return {
@@ -75,9 +89,10 @@ var fluid_1_5 = fluid_1_5 || {};
         var $localVideo = that.addVideoTile(),
         $status = that.locate('status');
         $localVideo.addClass('flc-webrtc-local');
+        $localVideo.prepend('<video muted></video>');
         that.webrtc = new WebRTC({
             url: that.options.signalingServer,
-            localVideoEl: $localVideo.get(0),
+            localVideoEl: $localVideo.find('video').get(0),
             //remoteVideosEl: that.locate('remoteVideo')[0],
             autoRequestMedia: true,
             log: false
@@ -100,7 +115,7 @@ var fluid_1_5 = fluid_1_5 || {};
         that.webrtc.on('videoRemoved', function (el) {
             //console.log('Video Removed', el.id, el.src);
             that.removeVideoTile(el);
-            that.events.onVideoRemove.fire(el.id);
+            that.events.onVideoRemoved.fire(el.id);
         });
     }
 
