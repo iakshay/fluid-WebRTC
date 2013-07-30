@@ -1,9 +1,14 @@
 ##Fluid Infusion WebRTC Component
 Creating a more accessible video conferencing experience with Fluid Infusion
 
-To use the component you must have WebRTC Signalling Server running
+###Setup
+Clone the fluid-WebRTC repository and update submodules:
 
-To launch the server
+	git clone git@github.com:iakshay/fluid-WebRTC.git
+	cd fluid-WebRTC
+	git submodule update --init --recursive
+	
+To use the component you must have WebRTC Signalling Server running, launch the server:
  
 	cd server
 	npm install
