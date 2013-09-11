@@ -1,12 +1,12 @@
 [submodule "libs/infusion"]
 	path = libs/infusion
-	url = git@github.com:fluid-project/infusion.git
+	url = git://github.com/fluid-project/infusion.git
 [submodule "libs/SimpleWebRTC"]
 	path = libs/SimpleWebRTC
-	url = git@github.com:HenrikJoreteg/SimpleWebRTC.git
+	url = git://github.com/HenrikJoreteg/SimpleWebRTC.git
 [submodule "server"]
 	path = server
 	url = https://github.com/andyet/signalmaster
 [submodule "libs/screenfull.js"]
 	path = libs/screenfull.js
-	url = git@github.com:sindresorhus/screenfull.js.git
+	url = git://github.com/sindresorhus/screenfull.js.git
