@@ -17,16 +17,15 @@ var fluid_1_5 = fluid_1_5 || {};
             status: ".flc-webrtc-status",
             room: ".flc-webrtc-room",
             roomName: ".flc-webrtc-room-name",
-            roomSubmit: ".flc-webrtc-room-submit",
-            enlargedContainer: ".flc-webrtc-enlarged",
             tilesContainer: ".flc-webrtc-tiles-container",
-            localVideo: ".flc-webrtc-local",
-            remoteVideo: ".flc-webrtc-remote-video",
+            roomSubmit: ".flc-webrtc-room-submit",
+            videoTiles: ".flc-webrtc-video-controls",
             muteBtn: ".flc-webrtc-video-mute",
-            fullscreenBtn: ".flc-webrtc-video-fullscreen"
+            fullscreenBtn: ".flc-webrtc-video-fullscreen",
+            selectables: ".selectable"
         },
         selectorsToIgnore: [
-          'status', 'roomName', 'tilesContainer', 'muteBtn', 'fullScreenBtn'
+          'status', 'roomName', 'tilesContainer', 'muteBtn', 'fullScreenBtn', 'selectables'
         ],
         repeatingSelectors: ['muteBtn', 'fullscreenBtn'],
         model:{
@@ -90,6 +89,26 @@ var fluid_1_5 = fluid_1_5 || {};
                 screenfull.toggle(video);
             }
         });
+        that.locate('tilesContainer').fluid("tabbable");
+        that.locate('tilesContainer').fluid("activatable", function(e){
+            //console.log('active', e.target);
+            $(e.target).addClass('activated');
+            //Show Mute and fullscreen buttons
+            //Make the buttons and activatable
+            //When activated should trigger clicks
+        });
+        that.selectableContext = fluid.selectable(that.locate('tilesContainer'), {
+            direction: fluid.a11y.orientation.HORIZONTAL,
+            rememberSelectionState: false,
+            onSelect: function (el) {
+                //console.log('selected', el);
+            },
+            onUnselect: function (el) {
+                //console.log('unelected', el);
+                //$(el).removeClass('activated');
+            }
+        });
+        //console.log(that);
     };
 
     
@@ -127,6 +146,10 @@ var fluid_1_5 = fluid_1_5 || {};
             //console.log('New Video Added', el.id, el.src);
             that.addVideoTile(el);
             that.events.onVideoAdded.fire(el.id);
+            that.dom.refresh('selectables');
+            console.log(that.locate('selectables'));
+            that.selectableContext.selectables = that.locate("selectables");
+            that.selectableContext.selectablesUpdated(that.activeItem);
         });
 
         that.webrtc.on('videoRemoved', function (el) {
@@ -139,6 +162,7 @@ var fluid_1_5 = fluid_1_5 || {};
     fluid.webrtc.finalInit = function (that) {
         var $status = that.locate('status'),
             $tilesContainer = that.locate('tilesContainer');
+        console.log(that.refreshView);
         room = that.options.room;
 
         if (room) {

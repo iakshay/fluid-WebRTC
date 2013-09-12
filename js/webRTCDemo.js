@@ -3,7 +3,7 @@ $(function () {
     'use strict';
     fluid.webrtc('#wrapper', {
         signalingServer: 'http://localhost:8888',
-        //room: 'foo'
+        room: 'foo',
         listeners: {
             onConnect: function(room) {
                 console.log('Connected to ', room);

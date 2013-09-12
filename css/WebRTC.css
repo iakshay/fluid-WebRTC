@@ -6,6 +6,7 @@
   position: relative;
   margin:10px 5px;
   background:#eee;
+  border:3px solid #222;
 }
 
 .flc-webrtc-video-controls video {
@@ -22,7 +23,7 @@
   opacity:0;
   transition: 0.5s opacity;
 }
-.flc-webrtc-video-controls:hover span{
+.flc-webrtc-video-controls:hover span, .flc-webrtc-video-controls:focus span{
   opacity:1;
 }
 
@@ -41,4 +42,12 @@
 }
 .flc-webrtc-local-video, .flc-webrtc-remote-video{
   display:inline-block;
+}
+
+.flc-webrtc-video-controls:focus{
+  border:3px solid orange;
+  outline:none;
+}
+.activated{
+  border:3px solid rgb(17, 230, 17);
 }
